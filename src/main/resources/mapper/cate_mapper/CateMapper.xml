@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cen.test.mapper.CateMapper">
+    <resultMap id="BaseResultMap" type="com.cen.test.entity.Category">
+        <id property="cateId" column="cate_id"/>
+        <result property="name" column="name"/>
+        <result property="logo" column="logo"/>
+        <result property="sort" column="sort"/>
+        <result property="level" column="level"/>
+        <result property="parentId" column="parent_id"/>
+    </resultMap>
+
+    <resultMap id="selectSubCateVOListMap" type="com.cen.test.object.dto.CategoryDTO" extends="BaseResultMap">
+        <id property="cateId" column="sub_cate_id"/>
+        <result property="name" column="sub_name"/>
+        <result property="logo" column="sub_logo"/>
+        <result property="sort" column="sub_sort"/>
+        <result property="level" column="sub_level"/>
+        <result property="parentId" column="sub_parent_id"/>
+        <collection property="categoryDTOList" resultMap="selectSubCateVOListMap"/>
+    </resultMap>
+
+    <select id="selectCateVOList" resultMap="selectSubCateVOListMap">
+    select c1.cate_id,c1.name,c1.logo,c1.sort,c1.level,c1.parent_id,
+    c2.cate_id as sub_cate_id,c2.name as sub_name,c2.logo as sub_logo,c2.sort as sub_sort,
+    c2.level as sub_level,c2.parent_id as sub_parent_id
+    from category c1
+    left join  category c2
+    on c1.cate_id=c2.parent_id
+    where c1.parent_id=0
+    union all
+    select c3.cate_id,c3.name,c3.logo,c3.sort,c3.level,c3.parent_id,NULL, NULL, NULL, NULL, NULL, NULL
+    from category c3
+    where c3.level = 0;
+    </select>
+</mapper>

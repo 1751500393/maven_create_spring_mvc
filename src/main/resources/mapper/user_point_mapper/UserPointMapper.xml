@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cen.test.mapper.UserPointMapper">
+    <resultMap id="BaseResultMap" type="com.cen.test.entity.UserPoint">
+        <id property="pointsId" column="pints_id"/>
+        <result property="points" column="points"/>
+        <result property="createDate" column="create_date"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="uId" column="u_id"/>
+        <result property="type" column="type"/>
+    </resultMap>
+    <insert id="insertUserPoint" useGeneratedKeys="true" keyProperty="user_point.uId">
+
+        insert into user_point(is_delete,points,u_id,type) value(#{user_point.isDelete},#{user_point.points},#{user_point.type})
+
+    </insert>
+</mapper>
